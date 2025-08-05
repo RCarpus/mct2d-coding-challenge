@@ -1,0 +1,11 @@
+# task_tracker/urls.py
+
+from django.urls import path
+from . import views
+
+app_name = 'task_tracker'
+
+urlpatterns = [
+    path('', views.task_list, name='task_list'),
+    path('task-submission/<int:task_id>/', views.task_submission_form_view, name='task_submission'),
+]

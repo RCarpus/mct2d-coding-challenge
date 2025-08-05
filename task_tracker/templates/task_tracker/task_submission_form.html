@@ -1,0 +1,9 @@
+{% extends 'task_tracker/base.html' %}
+{% block content %}
+
+<h1>Task Submission</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+{% endblock content %}

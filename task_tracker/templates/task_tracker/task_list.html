@@ -1,0 +1,15 @@
+{% extends 'task_tracker/base.html' %}
+{% block content %}
+
+<h1>Task List</h1>
+
+{% if tasks %}
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task.title }} - {{ task.completed }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks available.</p>
+{% endif %}
+{% endblock content %}
