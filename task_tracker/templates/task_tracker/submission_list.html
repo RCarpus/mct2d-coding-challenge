@@ -1,0 +1,35 @@
+{% extends 'task_tracker/base.html' %} {% block content %}
+<nav style="margin-bottom: 20px">
+  <a href="{% url 'task_tracker:task_list' %}">📋 Task List</a> |
+  <a href="{% url 'task_tracker:submission_list' %}"
+    >📝 Submissions (Default)</a
+  >
+  |
+  <a href="{% url 'task_tracker:submission_new_list' %}"
+    >🧪 Submissions (New Type)</a
+  >
+</nav>
+<h1>{{submission_type}} Submission List</h1>
+
+{% if submissions %}
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Submission Date</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for submission in submissions %}
+    <tr>
+      <td>{{ submission.task }}</td>
+      <td>{{ submission.submission_date }}</td>
+      <td>{{ submission.content }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No submission available.</p>
+{% endif %} {% endblock content %}

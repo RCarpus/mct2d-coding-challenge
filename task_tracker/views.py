@@ -45,6 +45,16 @@ def task_list(request):
     return render(request, 'task_tracker/task_list.html', {'tasks': tasks})
 
 
+def submission_list(request):
+    submissions = TaskSubmission.objects.all()
+    return render(request, 'task_tracker/submission_list.html', {'submissions': submissions, 'submission_type': "default"})
+
+
+def submission_new_type_list(request):
+    submissions = TaskSubmissionNewType.objects.all()
+    return render(request, 'task_tracker/submission_list.html', {'submissions': submissions, 'submission_type': "new type"})
+
+
 def task_submission_form_view(request, task_id):
     task = Task.objects.get(id=task_id)
     if request.method == 'POST':
