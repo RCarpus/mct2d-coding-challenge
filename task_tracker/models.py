@@ -33,3 +33,25 @@ class TaskSubmission(models.Model):
 
     def __str__(self):
         return f"{self.task.title}"
+
+
+class TaskSubmissionNewType(models.Model):
+    task = models.ForeignKey(
+        Task, on_delete=models.CASCADE, related_name='submissions_new_type')
+    submission_date = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        '''
+        Mark the task as completed when a submission is made
+        '''
+        if not self.task.completed:
+            self.task.completed = True
+            self.task.save()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-submission_date']
+
+    def __str__(self):
+        return f"{self.task.title}"

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from task_tracker.models import Task, TaskSubmission
+from task_tracker.models import Task, TaskSubmission, TaskSubmissionNewType
 from django.forms import forms
 from django.shortcuts import redirect
 from django import forms
@@ -9,6 +9,23 @@ from django.urls import reverse
 class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
+        fields = ['content']
+
+    def __init__(self, *args, **kwargs):
+        self.task = kwargs.pop('task', None)
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        submission = super().save(commit=False)
+        submission.task = self.task
+        if commit:
+            submission.save()
+        return submission
+
+
+class TaskSubmissionNewTypeForm(forms.ModelForm):
+    class Meta:
+        model = TaskSubmissionNewType
         fields = ['content']
 
     def __init__(self, *args, **kwargs):
@@ -37,4 +54,16 @@ def task_submission_form_view(request, task_id):
             return redirect('task_tracker:task_list')
     else:
         form = TaskSubmissionForm(task=task)
-    return render(request, 'task_tracker/task_submission_form.html', {'form': form, 'task': task})
+    return render(request, 'task_tracker/task_submission_form.html', {'form': form, 'task': task, 'submission_type': "default"})
+
+
+def task_submission_new_type_form_view(request, task_id):
+    task = Task.objects.get(id=task_id)
+    if request.method == 'POST':
+        form = TaskSubmissionNewTypeForm(request.POST, task=task)
+        if form.is_valid():
+            form.save()
+            return redirect('task_tracker:task_list')
+    else:
+        form = TaskSubmissionNewTypeForm(task=task)
+    return render(request, 'task_tracker/task_submission_form.html', {'form': form, 'task': task, 'submission_type': "new type"})
