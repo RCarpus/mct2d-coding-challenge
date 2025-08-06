@@ -8,6 +8,7 @@ app_name = 'task_tracker'
 urlpatterns = [
     path('', views.task_list, name='task_list'),
     path('add-task/', views.add_task, name='add_task'),
+    path('update-task/<int:task_id>', views.update_task, name="update_task"),
     path('submission-list', views.submission_list, name='submission_list'),
     path('submission-list-new', views.submission_new_type_list,
          name='submission_new_list'),

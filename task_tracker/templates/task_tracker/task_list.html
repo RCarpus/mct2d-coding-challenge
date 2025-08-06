@@ -25,6 +25,7 @@
       <th>Title</th>
       <th>Last Updated</th>
       <th>Completed</th>
+      <th>Modify</th>
       <th>Submission</th>
     </tr>
   </thead>
@@ -34,6 +35,15 @@
       <td>{{ task.title }}</td>
       <td>{{ task.updated_at }}</td>
       <td>{% if task.completed %} ✅ {% else %} ❌ {% endif %}</td>
+      <td>
+        <form
+          action="{% url 'task_tracker:update_task' task.id%}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">Update</button>
+        </form>
+      </td>
       <td>
         <form
           action="{% url 'task_tracker:task_submission' task.id %}"
