@@ -12,6 +12,12 @@
 
 <h1>Task List</h1>
 
+<div style="margin-bottom: 20px">
+  <form action="{% url 'task_tracker:add_task' %}" method="get">
+    <button type="submit">➕ Add New Task</button>
+  </form>
+</div>
+
 {% if tasks %}
 <table border="1" cellpadding="8" cellspacing="0">
   <thead>

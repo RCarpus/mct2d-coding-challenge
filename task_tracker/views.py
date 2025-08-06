@@ -6,6 +6,15 @@ from django import forms
 from django.urls import reverse
 
 
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'due_date', 'completed']
+        widgets = {
+            'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
+
 class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
@@ -38,6 +47,17 @@ class TaskSubmissionNewTypeForm(forms.ModelForm):
         if commit:
             submission.save()
         return submission
+
+
+def add_task(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_tracker:task_list')
+    else:
+        form = TaskForm()
+    return render(request, 'task_tracker/task_form.html', {'form': form})
 
 
 def task_list(request):
