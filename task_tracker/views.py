@@ -72,6 +72,14 @@ def update_task(request, task_id):
     return render(request, 'task_tracker/task_form.html', {'form': form, 'task': task})
 
 
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('task_tracker:task_list')
+    return render(request, 'task_tracker/task_confirm_delete.html', {'task': task})
+
+
 def task_list(request):
     tasks = Task.objects.all()
     return render(request, 'task_tracker/task_list.html', {'tasks': tasks})

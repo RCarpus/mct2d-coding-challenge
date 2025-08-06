@@ -43,6 +43,13 @@
         >
           <button type="submit">Update</button>
         </form>
+        <form
+          action="{% url 'task_tracker:delete_task' task.id %}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">🗑️Delete</button>
+        </form>
       </td>
       <td>
         <form
