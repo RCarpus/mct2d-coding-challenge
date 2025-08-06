@@ -1,15 +1,76 @@
-{% extends 'task_tracker/base.html' %}
-{% block content %}
+{% extends 'task_tracker/base.html' %} {% block content %}
+<nav style="margin-bottom: 20px">
+  <a href="{% url 'task_tracker:task_list' %}">📋 Task List</a> |
+  <a href="{% url 'task_tracker:submission_list' %}"
+    >📝 Submissions (Default)</a
+  >
+  |
+  <a href="{% url 'task_tracker:submission_new_list' %}"
+    >🧪 Submissions (New Type)</a
+  >
+</nav>
 
 <h1>Task List</h1>
 
+<div style="margin-bottom: 20px">
+  <form action="{% url 'task_tracker:add_task' %}" method="get">
+    <button type="submit">➕ Add New Task</button>
+  </form>
+</div>
+
 {% if tasks %}
-    <ul>
-        {% for task in tasks %}
-            <li>{{ task.title }} - {{ task.completed }}</li>
-        {% endfor %}
-    </ul>
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Last Updated</th>
+      <th>Completed</th>
+      <th>Modify</th>
+      <th>Submission</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <td>{{ task.title }}</td>
+      <td>{{ task.updated_at }}</td>
+      <td>{% if task.completed %} ✅ {% else %} ❌ {% endif %}</td>
+      <td>
+        <form
+          action="{% url 'task_tracker:update_task' task.id%}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">Update</button>
+        </form>
+        <form
+          action="{% url 'task_tracker:delete_task' task.id %}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">🗑️Delete</button>
+        </form>
+      </td>
+      <td>
+        <form
+          action="{% url 'task_tracker:task_submission' task.id %}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">Default</button>
+        </form>
+        <form
+          action="{% url 'task_tracker:task_submission_new' task.id %}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">New Type</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% else %}
-    <p>No tasks available.</p>
-{% endif %}
-{% endblock content %}
+<p>No tasks available.</p>
+{% endif %} {% endblock content %}

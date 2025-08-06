@@ -1,0 +1,12 @@
+<!-- templates/task_tracker/task_form.html -->
+{% extends 'task_tracker/base.html' %} {% block content %}
+<h2>{% if task %}Edit{% else %}Add{% endif %} Task</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">{% if task %}Update{% else %}Create{% endif %}</button>
+</form>
+<p style="margin-top: 20px">
+  <a href="{% url 'task_tracker:task_list' %}">← Back to Task List</a>
+</p>
+
+{% endblock %}
